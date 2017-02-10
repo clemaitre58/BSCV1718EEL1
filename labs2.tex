@@ -1,0 +1,223 @@
+\documentclass[12pt]{tdtp}
+\usepackage{tabularx,colortbl}
+\usepackage{multirow}
+\usepackage{listings}
+\lstset{
+	language=VHDL,
+basicstyle=\tiny\ttfamily}
+\definecolor{light-gray}{gray}{0.96}
+\definecolor{pageheading-gray}{gray}{0.2}
+\definecolor{dark-gray}{gray}{0.45}
+\definecolor{dark-green}{rgb}{0.245,0.121,0.0}
+
+\newcommand{\auteur}{Cedric Lemaitre}
+\newcommand{\couriel}{c.lemaitre58@gmail.com}
+\newcommand{\promo}{Bachelor in Computer Vision}
+\newcommand{\annee}{2016-2017}
+\newcommand{\matiere}{Digital Electronics}
+
+\newcommand{\tdtp}{Labs 2}
+\renewcommand{\sujet}{VHDL Design}
+
+
+\begin{document}
+\titre
+We propose in this labs some small basic exercises wich allow to discover VHDL Language.\\
+
+\textit {NB : all examples should be check using \textbf{test-benchs} and simulatuon tools}
+
+
+%%%%%%%%%%%%
+\Exo
+
+Create a AND3 with :
+
+\begin{enumerate}
+	\item 3 inputs : a,b,c
+	\item 1 output : s
+	\item Concurrency assignement 
+\end{enumerate}
+
+
+%%%%%%%%%%%%
+\Exo
+
+Create a ADD1\footnote{Add 2 signals of 1 bit} with :
+
+\begin{enumerate}
+	\item 3 inputs : a, b, cin
+	\item 2 output : s, cout
+	\item Concurrency assignement 
+\end{enumerate}
+
+
+%%%%%%%%%%%
+\Exo 
+
+Create a ADD4\footnote{Add 2 signals of 4 bit} with : 
+
+\begin{enumerate}
+	\item 3 inputs : a, b, cin
+	\item 2 outputs : s, cout
+	\item Concurrency assignement 
+	\item use your previous ADD1 as a function
+\end{enumerate}
+
+\textit{Please consider \textbf{port map} instructions for instantation process}
+
+%%%%%%%%%%
+\Exo
+
+
+Create a D flipflop  with : 
+
+\begin{enumerate}
+	\item 2 inputs : D, clk
+	\item 1 output : q
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\Exo
+
+
+Create an asynchronous 8-bit counter flipflop  with : 
+
+\begin{enumerate}
+	\item 2 inputs : reset, clk
+	\item 1 output : s
+\end{enumerate}
+
+
+
+
+%%%%%%%%%%
+\Exo
+
+Create an 8-bit shift register : \\
+
+In digital circuits, a shift register is a cascade of D flip flops, sharing the same clock, in which the output of each flip-flop is connected to the 'data' input of the next flip-flop in the chain, resulting in a circuit that shifts by one position the 'bit array' stored in it, 'shifting in' the data present at its input and 'shifting out' the last bit in the array, at each transition of the clock input.
+
+
+
+%%%%%%%%%
+
+\Note
+
+A test bench is an environment used to verify the correctness or soundness of a design or model, for example, that of a software product.
+ISE software allows to create vhdl test bench files as follow :  
+
+\begin{lstlisting}
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity test is
+end entity;
+
+architecture arc of test is
+  signal a, b : unsigned(3 downto 0);
+
+  signal cout1, cout2 : std_logic;
+
+  signal i, j, k      : integer := 0; 
+  signal error_found1 : integer := 0;  
+  signal error_found2 : integer := 0;   
+  signal clk          : std_logic;  
+
+  component add_struct is
+    port
+      (
+        a, b : in  unsigned(3 downto 0);
+        s    : out unsigned(3 downto 0);
+        cout : out std_logic
+        );
+  end component;
+
+  component add_comp is
+    port (
+      a, b : in  unsigned(3 downto 0);
+      s    : out unsigned(3 downto 0);
+      cout : out std_logic
+      );
+  end component;
+
+begin
+
+  inst1 : add_struct port map (a, b, s1, cout1);
+  inst2 : add_comp port map (a, b, s2, cout2);
+
+
+
+  process
+  begin
+    clk <= '0';
+    wait for 5 ns;
+    clk <= '1';
+    wait for 5 ns;
+  end process;
+
+
+  a <= to_unsigned (i, 4);
+  b <= to_unsigned (j, 4);
+  k <= i+j;
+
+  process
+  begin
+    wait until clk'event and clk = '1';
+    if k /= to_integer(cout1 & s1) then
+      error_found1 <= 1;
+    end if;
+    if k /= to_integer(cout2 & s2) then
+      error_found2 <= 1;
+    end if;
+
+    if i = 15 then
+      i <= 0;
+      j <= j + 1;
+    else
+      i <= i + 1;
+    end if;
+
+    
+  end process;
+
+
+
+
+end arc;
+\end{lstlisting}
+
+Table \ref{vhdl_ref_words} provides a complete list of VHDL reserved words.
+
+\begin{table}[!h]
+	\centering
+	\small\textsf{
+		\begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}} l l l l l }
+			\hline
+			abs            &  downto    &  library  &  postponed  &  srl        \\
+			\rowcolor{light-gray} access         &  else      &  linkage  &  procedure  &  subtype    \\
+			after          &  elsif     &  literal  &  process   &  then        \\
+			\rowcolor{light-gray} alias          &  end       &  loop     &  pure      &  to          \\
+			all            &  entity    &  map      &  range     &  transport   \\
+			\rowcolor{light-gray} and            &  exit      &  mod      &  record    &  type        \\
+			architecture   &  file      &  nand     &  register  &  unaffected  \\
+			\rowcolor{light-gray} array          &  for       &  new      &  reject    &  units       \\
+			assert         &  function  &  next     &  rem       &  until       \\
+			\rowcolor{light-gray} attribute      &  generate  &  nor      &  report    &  use         \\
+			begin          &  generic   &  not      &  return    &  variable    \\
+			\rowcolor{light-gray} block          &  group     &  null     &  rol       &  wait        \\
+			body           &  guarded   &  of       &  ror       &  when        \\
+			\rowcolor{light-gray} buffer         &  if        &  on       &  select    &  while       \\
+			bus            &  impure    &  open     &  severity  &  with        \\
+			\rowcolor{light-gray} case           &  in        &  or       &  signal    &  xnor        \\
+			component      &  inertial  &  others   &  shared    &  xor         \\
+			\rowcolor{light-gray} configuration  &  inout     &  out      &  sla       &              \\
+			constant       &  is        &  package  &  sll       &              \\
+			\rowcolor{light-gray} disconnect     &  label     &  port     &  sra       &              \\
+			\hline
+	\end{tabular*}}
+	\caption{A complete list of VHDL reserved words.}
+	\label{vhdl_ref_words}
+\end{table}
+
+\end{document}

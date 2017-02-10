@@ -39,8 +39,13 @@
 \\[12pt]
  	\addtocounter{exercicecount}{1}
 	}
-	
-%
+\newcommand{\Note}{%
+\vspace{20pt}
+\par
+{\hspace{-1.2cm}\raisebox{-2pt}{$\llcorner$}~~\bf Notes ~~\raisebox{2pt}{$\urcorner$}}
+\\[12pt]
+	}
+
 % fin du fichier
 %
 
