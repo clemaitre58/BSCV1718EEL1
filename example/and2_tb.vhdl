@@ -26,23 +26,6 @@ begin
 
    --  This process does the real job.
    process
-   --    type pattern_type is record
-   --       --  The inputs of the adder.
-   --       i0, i1, ci : bit;
-   --       --  The expected outputs of the adder.
-   --       s, co : bit;
-   --    end record;
-   --    --  The patterns to apply.
-   --    type pattern_array is array (natural range <>) of pattern_type;
-   --    constant patterns : pattern_array :=
-   --      (('0', '0', '0', '0', '0'),
-   --       ('0', '0', '1', '1', '0'),
-   --       ('0', '1', '0', '1', '0'),
-   --       ('0', '1', '1', '0', '1'),
-   --       ('1', '0', '0', '1', '0'),
-   --       ('1', '0', '1', '0', '1'),
-   --       ('1', '1', '0', '0', '1'),
-   --       ('1', '1', '1', '1', '1'));
    begin
        a <= '0';
        b <= '0';
